@@ -3,10 +3,10 @@ const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = {
-	entry: "./plugins/motion/front/src/index.jsx",
+	entry: "./plugins/face/front/src/index.jsx",
 	output: {
-		path: "./plugins/motion/front/assets",
-		filename: "motion.js"
+		path: "./plugins/face/front/assets",
+		filename: "face.js"
 	},
 	module: {
 		loaders: [
