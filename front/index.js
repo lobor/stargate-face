@@ -1,3 +1,3 @@
 module.exports = {
-  assets: ''
-};
+  assets: '/plugins/face/front/assets/face.js'
+}
