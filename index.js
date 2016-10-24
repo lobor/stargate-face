@@ -11,7 +11,8 @@ var spawn = require('child_process').spawn;
 class Face extends Plugin {
   get props() {
     return {
-      dependencies: ['motion']
+      dependencies: ['motion'],
+      conf: require('./config/config')
     };
   }
 
@@ -30,9 +31,9 @@ class Face extends Plugin {
     // console.log('config', this.config);
   }
 
-  // onDependencies(){
-  //   console.log(this.dependencies);
-  // }
+  onDependencies(){
+    console.log(Object.keys(this.dependencies));
+  }
 
   // onBack(error){
   //   // console.log('config', error);
