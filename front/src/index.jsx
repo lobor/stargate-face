@@ -2,12 +2,14 @@ import { setNavigation, setRoutes, deleteNavigation, deleteRoutes } from './../.
 //
 // import Routes from './routes/routes';
 import Navigation from './routes/navigation';
+var conf = require('./../../config/config');
+require('./languages/languages');
 
-setNavigation(Navigation);
+setNavigation(Navigation, conf.name);
 // setRoutes(Routes);
 
 // event for delete plugin
-elem.addEventListener('face:delete', function (e) {
+window.addEventListener('face:delete', function (e) {
   deleteRoutes(Routes);
   deleteNavigation(Navigation);
 }, false);

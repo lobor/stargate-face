@@ -1,12 +1,12 @@
 module.exports = [
 	{
-		"label": "Face recognition",
+		"label": "faceRecognition",
 		"href": "/face",
 		"icon": "camera alt"
 	},
-	{
-		"label": "Collection",
-		"href": "/cas",
-		"icon": "videocam"
-	}
+	// {
+	// 	"label": "Collection",
+	// 	"href": "/cas",
+	// 	"icon": "videocam"
+	// }
 ]

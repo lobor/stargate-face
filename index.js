@@ -32,7 +32,11 @@ class Face extends Plugin {
   }
 
   onDependencies(){
-    console.log(Object.keys(this.dependencies));
+    if(this.dependencies.motion){
+      this.dependencies.motion.on('addCam', ()=>{
+        this.dependencies.motion.motion.camera;
+      })
+    }
   }
 
   // onBack(error){
