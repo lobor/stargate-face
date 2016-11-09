@@ -1,4 +1,4 @@
 module.exports = {
   name: 'face',
-  collections: []
+  collections: [],
 };

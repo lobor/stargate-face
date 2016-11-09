@@ -1,11 +1,12 @@
 var basePath = process.cwd();
 import { Plugin } from './../../core/';
+import { spawn } from 'child_process'
 
-var workerFarm = require('worker-farm');
+// var workerFarm = require('worker-farm');
 
-var http = require("http");
+// var http = require("http");
 
-var spawn = require('child_process').spawn;
+// var spawn = require('child_process').spawn;
 
 
 class Face extends Plugin {
@@ -25,19 +26,27 @@ class Face extends Plugin {
 		this.isStarting = false;
 	}
 
-  onConfig(error){
-    // console.log('config', error);
-
-    // console.log('config', this.config);
+  onLoad(){
+    console.log(this.dependencies.motion.motion.getCam());
   }
 
-  onDependencies(){
-    if(this.dependencies.motion){
-      this.dependencies.motion.on('addCam', ()=>{
-        this.dependencies.motion.motion.camera;
-      })
-    }
+  install(){
+
   }
+
+  // onConfig(error){
+  //   // console.log('config', error);
+  //
+  //   // console.log('config', this.config);
+  // }
+  //
+  // onDependencies(){
+  //   if(this.dependencies.motion){
+  //     this.dependencies.motion.on('addCam', ()=>{
+  //       this.dependencies.motion.motion.camera;
+  //     })
+  //   }
+  // }
 
   // onBack(error){
   //   // console.log('config', error);
