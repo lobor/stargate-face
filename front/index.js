@@ -1,3 +1,7 @@
+var config = require('./../config/config.js');
 module.exports = {
-  assets: '/plugins/face/front/assets/face.js'
-}
+  assets: [
+    '/plugins/' + config.name + '/front/assets/' + config.name + '.js',
+    '/plugins/' + config.name + '/front/assets/' + config.name + '.js.map'
+  ]
+};

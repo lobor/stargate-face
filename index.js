@@ -1,9 +1,11 @@
 var basePath = process.cwd();
 import { Plugin } from './../../core/';
-import { spawn } from 'child_process'
+import { spawn, exec } from 'child_process'
+import fs from 'fs';
+let db = require(basePath + '/core/db')(basePath + '/db/FaceRecognition');
 
-// var workerFarm = require('worker-farm');
-
+var workerFarm = require('worker-farm');
+var workers = workerFarm(basePath + '/plugins/face/lib/worker.js');;
 // var http = require("http");
 
 // var spawn = require('child_process').spawn;
@@ -20,18 +22,135 @@ class Face extends Plugin {
   constructor () {
     super();
     this.stream = [];
-		this.collections = [];
 		this.pathCollection = null;
+
+    // this.db = db;
+    this.db = {};
+    this.tableFace = db.use('FaceRecognition');
+    // // console.log(db);
+    this.tableCollections = db.use('Collections');
 
 		this.isStarting = false;
 	}
 
   onLoad(){
-    console.log(this.dependencies.motion.motion.getCam());
+    this.loadCollections();
+    if(this.dependencies.motion){
+      this.dependencies.motion.on('start', ()=>{
+        let cams = this.dependencies.motion.motion.getCam();
+        for(let cam of cams){
+          this.launchWorker(cam);
+        }
+      });
+    }
+    else{
+      this.loadCamera((cams)=>{
+        // for(let cam in cams){
+          this.launchWorker(cams);
+        // }
+      });
+    }
+
+    // this.launchWorker()
+    // console.log(this.dependencies.motion.motion.getCam());
   }
 
-  install(){
+  loadCollections(){
+    // this.tableCollections = {list: function(){return []}}
+    let collections = this.tableCollections.list();
+    let collectionsPath = fs.readdirSync(basePath + '/plugins/face/collections');
 
+    if(collectionsPath.length){
+      collectionsPath.forEach((model)=>{
+        if(!this.tableCollections.find({name: model})){
+          this.tableCollections.push({
+            name: model
+          });
+        }
+      })
+    }
+
+    this.tableCollections.save();
+    // // else{
+    // //
+    // // }
+    // //
+    // //
+    //
+    // if(collections.length){
+    //   collectionsPath.forEach((model)=>{
+    //     if(!collectionsPath.indexOf(model.name)){
+    //       this.tableCollections.push({
+    //         name: model.name
+    //       })
+    //     }
+    //   })
+    // }
+    // else{
+    //
+    // }
+
+  }
+
+  loadCamera(cb){
+    exec('ls /dev/video*', (error, stdout, stderr) => {
+      let webCam = stdout.split('\n'); // output => ['/dev/video0', '/dev/video1', '']
+      let camera = [];
+
+    	// Hack last item
+    	webCam.pop();
+      camera = webCam.length - 1;
+      cb(camera);
+      // console.log(this.props.conf.motion);
+      // if(webCam.length){
+      //   webCam.forEach((el, i) => {
+      //     camera.push();
+      //     this.createCamConf(configJson, 'cam' + 1);
+      //
+      //     this.motion.addCam(configJson);
+      //   });
+      //
+      //   this.emit('addCam');
+      //
+      //   this.motion.setConfig(this.props.conf.motion);
+      //
+      //   this.motion.setConfigPath(__dirname + '/tmp/');
+      //   this.writeConf({
+      //     conf: this.props.conf.motion,
+      //     path: __dirname + '/tmp/',
+      //     name: 'confcam'
+      //   });
+      //   this.start();
+      // }
+    });
+  }
+
+
+  launchWorker(stream){
+    workers = workerFarm(basePath + '/plugins/face/lib/worker.js');
+    workers(stream, this.tableCollections.list(), (stop, data) => {
+      if(stop){
+        workerFarm.end(workers);
+        this.launchWorker(stream);
+        this.logResultsFaceRecognition(data);
+      }
+    });
+  }
+
+  logResultsFaceRecognition(datas){
+    for(let label in datas){
+      this.tableFace.push({
+        date: new Date(),
+        prediction: datas[label],
+        who: label
+      });
+    }
+    this.tableFace.save();
+    // let tableFace = db.use('FaceRecognition');
+    // tableFace.push({
+    //   date: new date(),
+    //   prediction:
+    // })
   }
 
   // onConfig(error){
@@ -95,26 +214,7 @@ class Face extends Plugin {
   //   });
 	// }
   //
-  // launchWorker(index){
-  //   var stream = this.stream[index];
-  //   var workers = workerFarm(process.cwd() + '/visio/worker.js');
-  //   workers(stream.port, this.collections, (outp) => {
-  //     workerFarm.end(workers);
-  //     if (outp) {
-  //       var data = {
-  //         port: stream.port,
-  //         label: Object.keys(outp)[0],
-  //         confidences: outp[Object.keys(outp)[0]]
-  //       };
-  //       this.emit('result', data);
-  //     } else {
-  //       this.emit('noFace', {
-  //         port: stream.port
-  //       });
-  //     }
-  //     this.launchWorker(index);
-  //   });
-  // }
+
 }
 
 

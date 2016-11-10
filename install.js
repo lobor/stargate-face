@@ -15,6 +15,13 @@ try {
   fs.mkdirSync('./tmp/models', '0777');
 }
 
+try {
+  fs.accessSync('./db/FaceRecognition', fs.F_OK);
+} catch (e) {
+  fs.mkdirSync('./db/FaceRecognition', '0777');
+}
+
+
 let ls = spawn('apt-get', ['install', 'libopencv-dev', 'python-opencv', 'python2.7']);
 
 ls.stdout.on('data', (data) => {

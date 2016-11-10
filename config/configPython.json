@@ -4,8 +4,8 @@
   "grid_x": 8,
   "grid_y": 8,
   "threshold": 3000.0,
-  "haar_cascade": "back/haar_cascade/haarcascade_frontalface_alt.xml",
-  "modelFace": "tmp/models/face.xml",
-  "modelNumberplate": "models/numberplate.xml",
+  "haar_cascade": "/back/haar_cascade/haarcascade_frontalface_alt.xml",
+  "modelFace": "/tmp/models/face.xml",
+  "modelNumberplate": "/models/numberplate.xml",
   "collection": "collections"
 }

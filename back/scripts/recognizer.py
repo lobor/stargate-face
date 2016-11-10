@@ -6,29 +6,39 @@ import numpy as np
 import sys
 import json
 
-with open('./config/visio/config.json') as data_file:
-    config = json.load(data_file)
+path = sys.argv[1]
 
+url = sys.argv[2]
+collections = sys.argv[3].split(',')
+
+with open(path + '/config/configPython.json') as data_file:
+    config = json.load(data_file)
 
 if False == cv2.useOptimized():
     cv2.setUseOptimized(True)
 
-url = sys.argv[1]
-collections = sys.argv[2].split(',')
 
-faceCascade = cv2.CascadeClassifier(config['haar_cascade'])
+faceCascade = cv2.CascadeClassifier(path + config['haar_cascade'])
+
 recognizer = cv2.createLBPHFaceRecognizer(config['radius'], config['neighbors'], config['grid_x'], config['grid_y'], config['threshold'])
+recognizer.load(path + config['modelFace'])
 
-recognizer.load(config['modelFace'])
+
+try:
+    url = int(url)
+except ValueError:
+    url = url
 
 cap=cv2.VideoCapture(url)
 
 while True:
     ret, frame = cap.read()
+    # cv2.imshow('image',frame)
+
     image = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-    image = np.array(image, 'uint8')
     image = cv2.equalizeHist(image)
 
+    image = np.array(image, 'uint8')
     faces = faceCascade.detectMultiScale(image)
 
     if len(faces):
@@ -45,13 +55,20 @@ while True:
             #     cv2.imwrite('./visio/collections/{}/{}.jpg'.format(collections[nbr_predicted], conf), img)
 
             results[nbr_predicted].append(conf)
+        # print results
         data = {}
         for label, confs in results.iteritems():
-            add = 0
-            for conf in confs:
-                add += conf
-            data[collections[label]] = add / len(confs)
+            if label == -1:
+                data['unknown'] = add / len(confs)
+            else:
+                add = 0
+                for conf in confs:
+                    add += conf
+                calc = add / len(confs)
+                if calc == 'Infinity':
+                    data['unknown'] = add / len(confs)
+                else:
+                    data[collections[label]] = add / len(confs)
         print json.dumps(data)
-
     if cv2.waitKey(1) == 27:
         exit(0)

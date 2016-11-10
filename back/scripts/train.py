@@ -9,8 +9,6 @@ import sys
 
 path = sys.argv[1]
 
-
-
 with open(path + 'config/configPython.json') as data_file:
     config = json.load(data_file)
 
@@ -53,7 +51,6 @@ for model_path in model_paths:
 # Perform the tranining
 if len(images):
     recognizer.train(images, np.array(labels))
-    print path + config['modelFace']
     recognizer.save(path + config['modelFace'])
 else:
     print('not face')
