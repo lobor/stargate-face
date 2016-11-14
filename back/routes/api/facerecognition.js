@@ -4,9 +4,16 @@ var spawn = require('child_process').spawn;
 export default [
 	{
 		'name': 'fr:list',
-		'depPlugin': ['tableFace'],
+		'depPlugin': ['tableRecognition'],
 		'call': function(data, fc){
-			fc(this.tableFace.list());
+			fc(this.tableRecognition.list());
+		}
+	},
+	{
+		'name': 'fr:notRecognition',
+		'depPlugin': ['tableNotRecognition'],
+		'call': function(data, fc){
+			fc(this.tableNotRecognition.list());
 		}
 	},
 	{

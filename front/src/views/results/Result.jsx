@@ -5,6 +5,7 @@
 
 
 import ListRecognized from './subViews/recognized/ListRecognized';
+import ListNotRecognized from './subViews/notRecognized/ListNotRecognized';
 import ListCollections from './subViews/collections/ListCollections';
 
 class Result extends React.Component {
@@ -22,7 +23,7 @@ class Result extends React.Component {
         {
           title: "Not recognized",
           url: '/face/notrecognized',
-          component: ListRecognized
+          component: ListNotRecognized
         },
         {
           title: "Collections",

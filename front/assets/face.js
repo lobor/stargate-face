@@ -52,15 +52,15 @@
 	
 	var _routes2 = _interopRequireDefault(_routes);
 	
-	var _navigation = __webpack_require__(7);
+	var _navigation = __webpack_require__(9);
 	
 	var _navigation2 = _interopRequireDefault(_navigation);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	//
-	var conf = __webpack_require__(8);
-	__webpack_require__(9);
+	var conf = __webpack_require__(10);
+	__webpack_require__(11);
 	
 	(0, _toolboxFront.setNavigation)(_navigation2.default, conf.name);
 	(0, _toolboxFront.setRoutes)(_routes2.default);
@@ -166,7 +166,11 @@
 	
 	var _ListRecognized2 = _interopRequireDefault(_ListRecognized);
 	
-	var _ListCollections = __webpack_require__(12);
+	var _ListNotRecognized = __webpack_require__(7);
+	
+	var _ListNotRecognized2 = _interopRequireDefault(_ListNotRecognized);
+	
+	var _ListCollections = __webpack_require__(8);
 	
 	var _ListCollections2 = _interopRequireDefault(_ListCollections);
 	
@@ -199,7 +203,7 @@
 	      }, {
 	        title: "Not recognized",
 	        url: '/face/notrecognized',
-	        component: _ListRecognized2.default
+	        component: _ListNotRecognized2.default
 	      }, {
 	        title: "Collections",
 	        url: '/face/collections',
@@ -304,7 +308,12 @@
 	
 	    _this.state = {
 	      render: false,
-	      fr: []
+	      fr: [],
+	      sort: {
+	        date: false,
+	        who: false,
+	        prediction: false
+	      }
 	    };
 	    return _this;
 	  }
@@ -319,8 +328,51 @@
 	      });
 	    }
 	  }, {
+	    key: 'sort',
+	    value: function sort(column) {
+	      var sort = this.state.sort;
+	
+	      if (false === sort[column]) {
+	        sort[column] = 'asc';
+	      } else if ('asc' === sort[column]) {
+	        sort[column] = 'desc';
+	      } else {
+	        sort[column] = false;
+	      }
+	
+	      var result = this.state.fr.sort(function (a, b) {
+	        var dateA = new Date(a[column]).getTime();
+	        var dateB = new Date(b[column]).getTime();
+	        if (sort[column] === 'asc') {
+	          return dateA - dateB;
+	        } else if (sort[column] === 'desc') {
+	          return dateB - dateA;
+	        }
+	        return 0;
+	      });
+	
+	      // sort[column] = true;
+	      this.setState({ fr: result, sort: sort });
+	    }
+	  }, {
+	    key: 'getIcon',
+	    value: function getIcon(column) {
+	      if (this.state.sort[column]) {
+	        return React.createElement(
+	          Ui.FontIcon,
+	          { className: 'material-icons' },
+	          this.state.sort[column] === 'desc' ? 'arrow_drop_downward' : 'arrow_drop_upward'
+	        );
+	      }
+	      return false;
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
+	      var styleLabel = { padding: 0 };
+	      var style = { width: '100%', textAlign: 'left' };
+	      var hoverColor = "white";
+	
 	      return React.createElement(
 	        _Loading2.default,
 	        { render: this.state.render },
@@ -336,17 +388,17 @@
 	              React.createElement(
 	                Ui.TableHeaderColumn,
 	                null,
-	                'Who'
+	                React.createElement(Ui.FlatButton, { label: 'Who', hoverColor: hoverColor, style: style, labelStyle: styleLabel })
 	              ),
 	              React.createElement(
 	                Ui.TableHeaderColumn,
 	                null,
-	                'When'
+	                React.createElement(Ui.FlatButton, { onClick: this.sort.bind(this, 'date'), label: 'When', hoverColor: hoverColor, style: style, labelStyle: styleLabel, labelPosition: this.state.sort['date'] ? 'after' : 'before', icon: this.getIcon('date') })
 	              ),
 	              React.createElement(
 	                Ui.TableHeaderColumn,
 	                null,
-	                'Prediction'
+	                React.createElement(Ui.FlatButton, { label: 'Prediction', hoverColor: hoverColor, style: style, labelStyle: styleLabel })
 	              )
 	            )
 	          ),
@@ -468,64 +520,127 @@
 
 /***/ },
 /* 7 */
-/***/ function(module, exports) {
-
-	"use strict";
-	
-	module.exports = [{
-		"label": "faceRecognition",
-		"href": "/face",
-		"icon": "camera alt"
-	}];
-
-/***/ },
-/* 8 */
-/***/ function(module, exports) {
-
-	'use strict';
-	
-	module.exports = {
-	  name: 'face',
-	  collections: []
-	};
-
-/***/ },
-/* 9 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-	
-	var conf = __webpack_require__(8);
-	
-	Lang.addTrad({
-	  en: _defineProperty({}, conf.name, __webpack_require__(10)),
-	  fr: _defineProperty({}, conf.name, __webpack_require__(11))
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
 	});
-
-/***/ },
-/* 10 */
-/***/ function(module, exports) {
-
-	'use strict';
 	
-	module.exports = {
-	  faceRecognition: 'Face recognition'
-	};
-
-/***/ },
-/* 11 */
-/***/ function(module, exports) {
-
-	'use strict';
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
-	module.exports = {
-	  faceRecognition: 'Reconnaissance faciale'
+	var _Loading = __webpack_require__(5);
+	
+	var _Loading2 = _interopRequireDefault(_Loading);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var ListRecognized = function (_React$Component) {
+	  _inherits(ListRecognized, _React$Component);
+	
+	  function ListRecognized() {
+	    _classCallCheck(this, ListRecognized);
+	
+	    var _this = _possibleConstructorReturn(this, (ListRecognized.__proto__ || Object.getPrototypeOf(ListRecognized)).call(this));
+	
+	    _this.state = {
+	      render: false,
+	      fr: []
+	    };
+	    return _this;
+	  }
+	
+	  _createClass(ListRecognized, [{
+	    key: 'componentWillMount',
+	    value: function componentWillMount() {
+	      var _this2 = this;
+	
+	      this.context.io.run('fr:notRecognition', {}, function (data) {
+	        _this2.setState({ render: true, fr: data });
+	      });
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      return React.createElement(
+	        _Loading2.default,
+	        { render: this.state.render },
+	        React.createElement(
+	          Ui.Table,
+	          { onRowSelection: this.goToUser },
+	          React.createElement(
+	            Ui.TableHeader,
+	            { displaySelectAll: false, adjustForCheckbox: false },
+	            React.createElement(
+	              Ui.TableRow,
+	              null,
+	              React.createElement(
+	                Ui.TableHeaderColumn,
+	                null,
+	                'Who'
+	              ),
+	              React.createElement(
+	                Ui.TableHeaderColumn,
+	                null,
+	                'When'
+	              ),
+	              React.createElement(
+	                Ui.TableHeaderColumn,
+	                null,
+	                'Prediction'
+	              )
+	            )
+	          ),
+	          React.createElement(
+	            Ui.TableBody,
+	            { displayRowCheckbox: false, showRowHover: true },
+	            this.state.fr.map(function (user, i) {
+	              var parseDate = new Date(user.date);
+	              var date = parseDate.getDate() + '/' + (parseDate.getMonth() + 1) + '/' + parseDate.getFullYear() + ' ' + parseDate.getHours() + ':' + parseDate.getMinutes();
+	              return React.createElement(
+	                Ui.TableRow,
+	                { key: i },
+	                React.createElement(
+	                  Ui.TableRowColumn,
+	                  null,
+	                  user.who
+	                ),
+	                React.createElement(
+	                  Ui.TableRowColumn,
+	                  null,
+	                  date
+	                ),
+	                React.createElement(
+	                  Ui.TableRowColumn,
+	                  null,
+	                  user.prediction
+	                )
+	              );
+	            })
+	          )
+	        )
+	      );
+	    }
+	  }]);
+	
+	  return ListRecognized;
+	}(React.Component);
+	
+	ListRecognized.contextTypes = {
+	  io: React.PropTypes.object
 	};
+	
+	exports.default = ListRecognized;
 
 /***/ },
-/* 12 */
+/* 8 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -676,6 +791,64 @@
 	};
 	
 	exports.default = Collections;
+
+/***/ },
+/* 9 */
+/***/ function(module, exports) {
+
+	"use strict";
+	
+	module.exports = [{
+		"label": "faceRecognition",
+		"href": "/face",
+		"icon": "camera alt"
+	}];
+
+/***/ },
+/* 10 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	module.exports = {
+	  name: 'face',
+	  collections: []
+	};
+
+/***/ },
+/* 11 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+	
+	var conf = __webpack_require__(10);
+	
+	Lang.addTrad({
+	  en: _defineProperty({}, conf.name, __webpack_require__(12)),
+	  fr: _defineProperty({}, conf.name, __webpack_require__(13))
+	});
+
+/***/ },
+/* 12 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	module.exports = {
+	  faceRecognition: 'Face recognition'
+	};
+
+/***/ },
+/* 13 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	module.exports = {
+	  faceRecognition: 'Reconnaissance faciale'
+	};
 
 /***/ }
 /******/ ]);

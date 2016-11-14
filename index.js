@@ -26,7 +26,8 @@ class Face extends Plugin {
 
     // this.db = db;
     this.db = {};
-    this.tableFace = db.use('FaceRecognition');
+    this.tableRecognition = db.use('Recognition');
+    this.tableNotRecognition = db.use('NotRecognition');
     // // console.log(db);
     this.tableCollections = db.use('Collections');
 
@@ -128,24 +129,39 @@ class Face extends Plugin {
 
   launchWorker(stream){
     workers = workerFarm(basePath + '/plugins/face/lib/worker.js');
-    workers(stream, this.tableCollections.list(), (stop, data) => {
-      if(stop){
-        workerFarm.end(workers);
-        this.launchWorker(stream);
-        this.logResultsFaceRecognition(data);
-      }
+    let collections = this.tableCollections.list();
+
+    collections = collections.map(function(item){
+      return item.name;
+    })
+
+    workers(stream, collections, (data) => {
+      workerFarm.end(workers);
+      this.launchWorker(stream);
+      this.logResultsFaceRecognition(data);
     });
   }
 
   logResultsFaceRecognition(datas){
+    let table = {};
     for(let label in datas){
-      this.tableFace.push({
-        date: new Date(),
-        prediction: datas[label],
-        who: label
-      });
+      if(label !== 'unknown'){
+        this.tableRecognition.push({
+          date: new Date(),
+          prediction: datas[label],
+          who: label
+        });
+      }
+      else if(datas[label] < 15){
+        this.tableNotRecognition.push({
+          date: new Date(),
+          prediction: datas[label],
+          who: label
+        });
+      }
     }
-    this.tableFace.save();
+    this.tableRecognition.save();
+    this.tableNotRecognition.save();
     // let tableFace = db.use('FaceRecognition');
     // tableFace.push({
     //   date: new date(),
