@@ -5,6 +5,8 @@ import cv2, os
 import numpy as np
 import sys
 import json
+from multiprocessing import Pool
+import time
 
 path = sys.argv[1]
 
@@ -17,12 +19,13 @@ with open(path + '/config/configPython.json') as data_file:
 if False == cv2.useOptimized():
     cv2.setUseOptimized(True)
 
-
+nameNotRecognize = 'unknown'
 faceCascade = cv2.CascadeClassifier(path + config['haar_cascade'])
 
 recognizer = cv2.createLBPHFaceRecognizer(config['radius'], config['neighbors'], config['grid_x'], config['grid_y'], config['threshold'])
 recognizer.load(path + config['modelFace'])
 
+worker = 'undefined'
 
 try:
     url = int(url)
@@ -30,6 +33,9 @@ except ValueError:
     url = url
 
 cap=cv2.VideoCapture(url)
+
+def callback():
+    print 'finish'
 
 while True:
     ret, frame = cap.read()
@@ -58,17 +64,26 @@ while True:
         # print results
         data = {}
         for label, confs in results.iteritems():
+            calc = len(confs)
+            date = time.time()
             if label == -1:
-                data['unknown'] = add / len(confs)
+                date = time.time()
+                nameImg = '{}_{}_{}.jpg'.format(nameNotRecognize, calc, date)
+                cv2.imwrite(path + '/tmp/notRecognize/{}'.format(nameImg), frame)
+                data[nameNotRecognize] = {'prediction': calc, 'img': nameImg}
             else:
                 add = 0
                 for conf in confs:
                     add += conf
+
                 calc = add / len(confs)
+
                 if calc == 'Infinity':
-                    data['unknown'] = add / len(confs)
+                    nameImg = '{}_{}_{}.jpg'.format(nameNotRecognize, calc, date)
+                    cv2.imwrite(path + '/tmp/notRecognize/{}'.format(nameImg), frame)
+                    data[nameNotRecognize] = {'prediction': calc, 'date': date}
                 else:
-                    data[collections[label]] = add / len(confs)
+                    data[collections[label]] = calc
         print json.dumps(data)
     if cv2.waitKey(1) == 27:
         exit(0)

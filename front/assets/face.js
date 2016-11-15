@@ -52,15 +52,15 @@
 	
 	var _routes2 = _interopRequireDefault(_routes);
 	
-	var _navigation = __webpack_require__(9);
+	var _navigation = __webpack_require__(11);
 	
 	var _navigation2 = _interopRequireDefault(_navigation);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	//
-	var conf = __webpack_require__(10);
-	__webpack_require__(11);
+	var conf = __webpack_require__(12);
+	__webpack_require__(13);
 	
 	(0, _toolboxFront.setNavigation)(_navigation2.default, conf.name);
 	(0, _toolboxFront.setRoutes)(_routes2.default);
@@ -170,7 +170,7 @@
 	
 	var _ListNotRecognized2 = _interopRequireDefault(_ListNotRecognized);
 	
-	var _ListCollections = __webpack_require__(8);
+	var _ListCollections = __webpack_require__(10);
 	
 	var _ListCollections2 = _interopRequireDefault(_ListCollections);
 	
@@ -525,7 +525,318 @@
 	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
-	  value: true
+		value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _Loading = __webpack_require__(5);
+	
+	var _Loading2 = _interopRequireDefault(_Loading);
+	
+	var _Lightbox = __webpack_require__(8);
+	
+	var _Lightbox2 = _interopRequireDefault(_Lightbox);
+	
+	var _Attribute = __webpack_require__(9);
+	
+	var _Attribute2 = _interopRequireDefault(_Attribute);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var ListRecognized = function (_React$Component) {
+		_inherits(ListRecognized, _React$Component);
+	
+		function ListRecognized() {
+			_classCallCheck(this, ListRecognized);
+	
+			var _this = _possibleConstructorReturn(this, (ListRecognized.__proto__ || Object.getPrototypeOf(ListRecognized)).call(this));
+	
+			_this.state = {
+				render: false,
+				fr: [],
+				popup: {
+					open: false,
+					data: {}
+				}
+			};
+			return _this;
+		}
+	
+		_createClass(ListRecognized, [{
+			key: 'getList',
+			value: function getList() {
+				var _this2 = this;
+	
+				this.context.io.run('fr:notRecognition', {}, function (data) {
+					_this2.setState({
+						render: true,
+						fr: data,
+						popup: {
+							open: false,
+							data: {}
+						}
+					});
+				});
+			}
+		}, {
+			key: 'componentWillMount',
+			value: function componentWillMount() {
+				this.getList();
+			}
+		}, {
+			key: 'handlePopup',
+			value: function handlePopup(rows) {
+				this.setState({
+					popup: {
+						open: !this.state.popup.open,
+						data: this.state.fr[rows]
+					}
+				});
+			}
+		}, {
+			key: 'delete',
+			value: function _delete(index) {
+				var _this3 = this;
+	
+				this.setState({
+					render: false
+				});
+	
+				this.context.io.run('fr:notRecognize:delete', this.state.fr[index], function (data) {
+					if (data.success) {
+						_this3.getList();
+					} else {}
+				});
+			}
+		}, {
+			key: 'render',
+			value: function render() {
+				var _this4 = this;
+	
+				return React.createElement(
+					_Loading2.default,
+					{ render: this.state.render },
+					React.createElement(_Attribute2.default, { open: this.state.popup.open, data: this.state.popup.data }),
+					React.createElement(
+						Ui.Table,
+						null,
+						React.createElement(
+							Ui.TableHeader,
+							{ displaySelectAll: false, adjustForCheckbox: false },
+							React.createElement(
+								Ui.TableRow,
+								null,
+								React.createElement(Ui.TableHeaderColumn, null),
+								React.createElement(
+									Ui.TableHeaderColumn,
+									null,
+									'Who'
+								),
+								React.createElement(
+									Ui.TableHeaderColumn,
+									null,
+									'When'
+								),
+								React.createElement(
+									Ui.TableHeaderColumn,
+									null,
+									'Prediction'
+								),
+								React.createElement(
+									Ui.TableHeaderColumn,
+									null,
+									'Actions'
+								)
+							)
+						),
+						React.createElement(
+							Ui.TableBody,
+							{ displayRowCheckbox: false, showRowHover: true },
+							this.state.fr.map(function (user, i) {
+								var parseDate = new Date(user.date);
+								var date = parseDate.getDate() + '/' + (parseDate.getMonth() + 1) + '/' + parseDate.getFullYear() + ' ' + parseDate.getHours() + ':' + parseDate.getMinutes();
+	
+								var avatar = React.createElement(Ui.Avatar, { icon: React.createElement(
+										Ui.FontIcon,
+										{ className: 'material-icons' },
+										' face '
+									), size: 30 });
+	
+								if (user.img) {
+									avatar = React.createElement(_Lightbox2.default, { src: '/face/img/' + user.img, size: 30, style: {
+											cursor: 'pointer'
+										} });
+								}
+	
+								return React.createElement(
+									Ui.TableRow,
+									{ key: i },
+									React.createElement(
+										Ui.TableRowColumn,
+										null,
+										avatar
+									),
+									React.createElement(
+										Ui.TableRowColumn,
+										null,
+										user.who
+									),
+									React.createElement(
+										Ui.TableRowColumn,
+										null,
+										date
+									),
+									React.createElement(
+										Ui.TableRowColumn,
+										null,
+										user.prediction
+									),
+									React.createElement(
+										Ui.TableRowColumn,
+										{ style: {
+												display: 'flex',
+												alignItems: 'center'
+											} },
+										React.createElement(Ui.RaisedButton, { label: 'Attribute', primary: true, onClick: _this4.handlePopup.bind(_this4, i) }),
+										React.createElement(Ui.RaisedButton, { icon: React.createElement(
+												Ui.FontIcon,
+												{ color: 'white', className: 'material-icons' },
+												' delete '
+											), onClick: _this4.delete.bind(_this4, i), backgroundColor: Colors.red800 })
+									)
+								);
+							})
+						)
+					)
+				);
+			}
+		}]);
+	
+		return ListRecognized;
+	}(React.Component);
+	
+	ListRecognized.contextTypes = {
+		io: React.PropTypes.object
+	};
+	
+	exports.default = ListRecognized;
+
+/***/ },
+/* 8 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	// import { style } from './style';
+	
+	var Lightbox = function (_React$Component) {
+		_inherits(Lightbox, _React$Component);
+	
+		function Lightbox() {
+			var _ref;
+	
+			_classCallCheck(this, Lightbox);
+	
+			for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+				args[_key] = arguments[_key];
+			}
+	
+			var _this = _possibleConstructorReturn(this, (_ref = Lightbox.__proto__ || Object.getPrototypeOf(Lightbox)).call.apply(_ref, [this].concat(args)));
+	
+			_this.state = {
+				position: 'absolute',
+				top: 0,
+				left: 0,
+				width: '100%',
+				height: '100%',
+				display: 'none',
+				justifyContent: 'center',
+				alignItems: 'center',
+				zIndex: '10001',
+				background: 'rgba(31, 30, 30, 0.71)'
+			};
+	
+			_this.onClick = _this.onClick.bind(_this);
+			_this.close = _this.close.bind(_this);
+			return _this;
+		}
+	
+		_createClass(Lightbox, [{
+			key: 'onClick',
+			value: function onClick() {
+				this.setState({
+					display: 'flex'
+				});
+	
+				if (this.props.onClick) {
+					var _props;
+	
+					(_props = this.props).onClick.apply(_props, arguments);
+				}
+			}
+		}, {
+			key: 'close',
+			value: function close() {
+				this.setState({
+					display: 'none'
+				});
+			}
+		}, {
+			key: 'render',
+			value: function render() {
+				return React.createElement(
+					'div',
+					null,
+					React.createElement(
+						'div',
+						{ style: this.state, onClick: this.close },
+						React.createElement(
+							Ui.Paper,
+							{ zDepth: 5, rounded: false },
+							React.createElement('img', { src: this.props.src, style: {
+									maxWidth: '100%',
+									maxHeight: '100%',
+									display: 'block'
+								} })
+						)
+					),
+					React.createElement(Ui.Avatar, { src: this.props.src, size: this.props.size, onClick: this.onClick, style: this.props.style })
+				);
+			}
+		}]);
+	
+		return Lightbox;
+	}(React.Component);
+	
+	exports.default = Lightbox;
+
+/***/ },
+/* 9 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
 	});
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -542,105 +853,123 @@
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
-	var ListRecognized = function (_React$Component) {
-	  _inherits(ListRecognized, _React$Component);
+	var Attribute = function (_React$Component) {
+		_inherits(Attribute, _React$Component);
 	
-	  function ListRecognized() {
-	    _classCallCheck(this, ListRecognized);
+		function Attribute() {
+			var _ref;
 	
-	    var _this = _possibleConstructorReturn(this, (ListRecognized.__proto__ || Object.getPrototypeOf(ListRecognized)).call(this));
+			_classCallCheck(this, Attribute);
 	
-	    _this.state = {
-	      render: false,
-	      fr: []
-	    };
-	    return _this;
-	  }
+			for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+				args[_key] = arguments[_key];
+			}
 	
-	  _createClass(ListRecognized, [{
-	    key: 'componentWillMount',
-	    value: function componentWillMount() {
-	      var _this2 = this;
+			var _this = _possibleConstructorReturn(this, (_ref = Attribute.__proto__ || Object.getPrototypeOf(Attribute)).call.apply(_ref, [this].concat(args)));
 	
-	      this.context.io.run('fr:notRecognition', {}, function (data) {
-	        _this2.setState({ render: true, fr: data });
-	      });
-	    }
-	  }, {
-	    key: 'render',
-	    value: function render() {
-	      return React.createElement(
-	        _Loading2.default,
-	        { render: this.state.render },
-	        React.createElement(
-	          Ui.Table,
-	          { onRowSelection: this.goToUser },
-	          React.createElement(
-	            Ui.TableHeader,
-	            { displaySelectAll: false, adjustForCheckbox: false },
-	            React.createElement(
-	              Ui.TableRow,
-	              null,
-	              React.createElement(
-	                Ui.TableHeaderColumn,
-	                null,
-	                'Who'
-	              ),
-	              React.createElement(
-	                Ui.TableHeaderColumn,
-	                null,
-	                'When'
-	              ),
-	              React.createElement(
-	                Ui.TableHeaderColumn,
-	                null,
-	                'Prediction'
-	              )
-	            )
-	          ),
-	          React.createElement(
-	            Ui.TableBody,
-	            { displayRowCheckbox: false, showRowHover: true },
-	            this.state.fr.map(function (user, i) {
-	              var parseDate = new Date(user.date);
-	              var date = parseDate.getDate() + '/' + (parseDate.getMonth() + 1) + '/' + parseDate.getFullYear() + ' ' + parseDate.getHours() + ':' + parseDate.getMinutes();
-	              return React.createElement(
-	                Ui.TableRow,
-	                { key: i },
-	                React.createElement(
-	                  Ui.TableRowColumn,
-	                  null,
-	                  user.who
-	                ),
-	                React.createElement(
-	                  Ui.TableRowColumn,
-	                  null,
-	                  date
-	                ),
-	                React.createElement(
-	                  Ui.TableRowColumn,
-	                  null,
-	                  user.prediction
-	                )
-	              );
-	            })
-	          )
-	        )
-	      );
-	    }
-	  }]);
+			_this.state = {
+				open: _this.props.open,
+				render: false,
+				form: {},
+				dataSource: []
+			};
 	
-	  return ListRecognized;
+			_this.handleClose = _this.handleClose.bind(_this);
+			_this.submit = _this.submit.bind(_this);
+			_this.handleValue = _this.handleValue.bind(_this);
+			return _this;
+		}
+	
+		_createClass(Attribute, [{
+			key: 'componentWillReceiveProps',
+			value: function componentWillReceiveProps(props) {
+				this.setState({
+					open: !props.open || !this.state.open ? true : false
+				});
+			}
+		}, {
+			key: 'componentWillMount',
+			value: function componentWillMount() {
+				var _this2 = this;
+	
+				this.context.io.run('fr:collections:get', {}, function (data) {
+					_this2.setState({
+						render: true,
+						dataSource: data
+					});
+				});
+			}
+		}, {
+			key: 'handleClose',
+			value: function handleClose() {
+				this.setState({ open: !this.state.open });
+			}
+		}, {
+			key: 'handleValue',
+			value: function handleValue(value) {
+				this.setState({
+					form: { collection: value, recognize: this.props.data }
+				});
+			}
+		}, {
+			key: 'submit',
+			value: function submit() {
+				var _this3 = this;
+	
+				this.setState({
+					render: false
+				});
+				this.context.io.run('fr:notRecognize:moveToCollections', this.state.form, function (data) {
+					_this3.setState({
+						render: true
+					});
+	
+					_this3.handleClose();
+				});
+			}
+		}, {
+			key: 'render',
+			value: function render() {
+				var actions = [React.createElement(Ui.FlatButton, {
+					label: 'Cancel',
+					primary: true,
+					onTouchTap: this.handleClose
+				}), React.createElement(Ui.FlatButton, {
+					label: 'Submit',
+					primary: true,
+					keyboardFocused: true,
+					onTouchTap: this.submit
+				})];
+	
+				return React.createElement(
+					Ui.Dialog,
+					{ title: 'Attribute', actions: actions, modal: false, onRequestClose: this.handleClose, open: this.state.open },
+					React.createElement(
+						_Loading2.default,
+						{ render: this.state.render },
+						React.createElement(Ui.AutoComplete, {
+							hintText: 'Name of collection',
+							floatingLabelText: 'Attribute on a collections',
+							dataSource: this.state.dataSource,
+							dataSourceConfig: { text: 'name', value: 'id' },
+							onNewRequest: this.handleValue
+						})
+					)
+				);
+			}
+		}]);
+	
+		return Attribute;
 	}(React.Component);
 	
-	ListRecognized.contextTypes = {
-	  io: React.PropTypes.object
+	Attribute.contextTypes = {
+		io: React.PropTypes.object
 	};
 	
-	exports.default = ListRecognized;
+	exports.default = Attribute;
 
 /***/ },
-/* 8 */
+/* 10 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -793,7 +1122,7 @@
 	exports.default = Collections;
 
 /***/ },
-/* 9 */
+/* 11 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -805,7 +1134,7 @@
 	}];
 
 /***/ },
-/* 10 */
+/* 12 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -816,22 +1145,22 @@
 	};
 
 /***/ },
-/* 11 */
+/* 13 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 	
-	var conf = __webpack_require__(10);
+	var conf = __webpack_require__(12);
 	
 	Lang.addTrad({
-	  en: _defineProperty({}, conf.name, __webpack_require__(12)),
-	  fr: _defineProperty({}, conf.name, __webpack_require__(13))
+	  en: _defineProperty({}, conf.name, __webpack_require__(14)),
+	  fr: _defineProperty({}, conf.name, __webpack_require__(15))
 	});
 
 /***/ },
-/* 12 */
+/* 14 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -841,7 +1170,7 @@
 	};
 
 /***/ },
-/* 13 */
+/* 15 */
 /***/ function(module, exports) {
 
 	'use strict';

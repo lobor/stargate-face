@@ -16,6 +16,12 @@ try {
 }
 
 try {
+  fs.accessSync('./tmp/notRecognize', fs.F_OK);
+} catch (e) {
+  fs.mkdirSync('./tmp/notRecognize', '0777');
+}
+
+try {
   fs.accessSync('./db/FaceRecognition', fs.F_OK);
 } catch (e) {
   fs.mkdirSync('./db/FaceRecognition', '0777');

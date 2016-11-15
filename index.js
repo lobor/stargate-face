@@ -152,12 +152,24 @@ class Face extends Plugin {
           who: label
         });
       }
-      else if(datas[label] < 15){
-        this.tableNotRecognition.push({
-          date: new Date(),
-          prediction: datas[label],
-          who: label
-        });
+      else if(label === 'unknown' || datas[label] > 15){
+        let dataToSave = {}
+        if(label === 'unknown'){
+          dataToSave = {
+            date: new Date(),
+            prediction: datas[label].prediction,
+            img: datas[label].img,
+            who: label
+          }
+        }
+        else{
+          dataToSave = {
+            date: new Date(),
+            prediction: datas[label],
+            who: label
+          }
+        }
+        this.tableNotRecognition.push(dataToSave);
       }
     }
     this.tableRecognition.save();

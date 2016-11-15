@@ -31,7 +31,7 @@ class Result extends React.Component {
           component: ListCollections
         }
       ]
-    }
+    };
   }
 
   goTo(redirect){
@@ -46,13 +46,13 @@ class Result extends React.Component {
     return (
       <div>
         <Ui.Toolbar>
-          <Ui.ToolbarGroup style={{ alignItems: "center"}}>
+          <Ui.ToolbarGroup style={ { alignItems: "center"} }>
             <Ui.ToolbarTitle text="Face recognition" />
             {this.state.buttons.map((button, i)=>{
               return (
-                <ReactRouter.Link key={i} to={button.url} isActive={ (location)=>{return location.pathname === button.url;}}>
+                <ReactRouter.Link key={i} to={button.url} isActive={ (location)=>{return location.pathname === button.url;} }>
                   {
-                    ({isActive, location, href, onClick, transition}) => <Ui.FlatButton primary={isActive} onClick={onClick} href={href} key={i} label={button.title} />
+                    ({isActive, location, href, onClick, transition}) => <Ui.FlatButton primary={ isActive } onClick={ onClick } href={ href } key={ i } label={ button.title } />
                   }
                 </ReactRouter.Link>
               );
@@ -62,7 +62,7 @@ class Result extends React.Component {
         <div>
           {this.state.buttons.map((button, i)=>{
             return (
-              <ReactRouter.Match pattern={button.url} exactly key={i} component={button.component} />
+              <ReactRouter.Match pattern={ button.url } exactly key={ i } component={ button.component } />
             );
           })}
         </div>

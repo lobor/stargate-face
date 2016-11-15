@@ -17,25 +17,75 @@ export default [
 		}
 	},
 	{
-		'name': 'fr:collections:get',
+		'name': 'fr:notRecognize:moveToCollections',
+		'depPlugin': ['tableNotRecognition', 'tableRecognition'],
 		'call': function(data, fc){
-			fs.readdir(process.cwd() + '/plugins/face/collections/', function(err, files){
-				if(err){
+			fs.rename(process.cwd() + '/plugins/face/tmp/notRecognize/' + data.recognize.img, process.cwd() + '/plugins/face/collections/' + data.collection.name + '/' + data.recognize.img, (err) => {
+			  if (err) {
 					fc({
 						error: err
-					})
+					});
 				}
 				else{
-					let result = [];
-					files.forEach((file)=>{
-						result.push({
-							name: file,
-							nbPortrait: fs.readdirSync(process.cwd() + '/plugins/face/collections/' + file).length
-						});
+					fc({
+						success: true
 					});
-					fc(result);
 				}
 			});
+
+			this.tableNotRecognition.del(data.recognize.id);
+			this.tableRecognition.push({
+				"date": data.recognize.date,
+		    "prediction": data.recognize.prediction,
+		    "who": data.collection.name
+			});
+			this.tableRecognition.save();
+			this.tableNotRecognition.save();
+		}
+	},
+	{
+		'name': 'fr:notRecognize:delete',
+		'depPlugin': ['tableNotRecognition'],
+		'call': function(data, fc){
+			fs.unlink(process.cwd() + '/plugins/face/tmp/notRecognize/' + data.img, (err) => {
+				if (err) {
+					fc({
+						error: err
+					});
+				}
+				else{
+					fc({
+						success: true
+					});
+				}
+			});
+
+			this.tableNotRecognition.del(data.id);
+			this.tableNotRecognition.save();
+		}
+	},
+	{
+		'name': 'fr:collections:get',
+		'depPlugin': ['tableCollections'],
+		'call': function(data, fc){
+			fc(this.tableCollections.list());
+			// fs.readdir(process.cwd() + '/plugins/face/collections/', function(err, files){
+			// 	if(err){
+			// 		fc({
+			// 			error: err
+			// 		})
+			// 	}
+			// 	else{
+			// 		let result = [];
+			// 		files.forEach((file)=>{
+			// 			result.push({
+			// 				name: file,
+			// 				nbPortrait: fs.readdirSync(process.cwd() + '/plugins/face/collections/' + file).length
+			// 			});
+			// 		});
+			// 		fc(result);
+			// 	}
+			// });
 		}
 	},
 	// {
