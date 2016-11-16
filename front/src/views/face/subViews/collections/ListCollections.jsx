@@ -1,5 +1,5 @@
-// import { Title } from './style.js';
 import Loading from 'components/loading/Loading';
+import ButtonDelete from 'components/buttonDelete/ButtonDelete';
 
 class Collections extends React.Component {
   constructor(...args){
@@ -34,7 +34,7 @@ class Collections extends React.Component {
   }
 
   componentWillMount(){
-    this.context.io.run('fr:collections:get', {}, (data) => {
+    this.context.io.run('fr:collections:list', {}, (data) => {
       this.setState({models: data, render: true});
     });
   }
@@ -47,6 +47,9 @@ class Collections extends React.Component {
       }
     });
   }
+  delete(){
+
+  }
 
   render() {
     return (
@@ -56,6 +59,7 @@ class Collections extends React.Component {
             <Ui.TableRow>
               <Ui.TableHeaderColumn>Model Name</Ui.TableHeaderColumn>
               <Ui.TableHeaderColumn>Number of picture</Ui.TableHeaderColumn>
+              <Ui.TableHeaderColumn></Ui.TableHeaderColumn>
             </Ui.TableRow>
           </Ui.TableHeader>
           <Ui.TableBody displayRowCheckbox={false} showRowHover={true}>
@@ -64,6 +68,16 @@ class Collections extends React.Component {
                 <Ui.TableRow key={i}>
                   <Ui.TableRowColumn>{model.name}</Ui.TableRowColumn>
                   <Ui.TableRowColumn>{model.nbPortrait}</Ui.TableRowColumn>
+                    <Ui.TableRowColumn style={{ display: 'flex', 	alignItems: 'center'}}>
+                      <ReactRouter.Link to={"/face/collections/edit/" + model.id}>
+  		                  {
+  		                    ({isActive, location, href, onClick, transition}) =>(
+                            <Ui.RaisedButton primary={true} href={href} onClick={onClick} icon={< Ui.FontIcon className = "material-icons" > edit < /Ui.FontIcon>}/>
+  												)
+  		                  }
+  		                </ReactRouter.Link>
+  										<ButtonDelete confirmDelete={this.delete.bind(this, i)} />
+  									</Ui.TableRowColumn>
                 </Ui.TableRow>
               );
             })}

@@ -14,5 +14,13 @@ export default [
       // req.params
       res.sendFile(process.cwd() + '/plugins/face/tmp/notRecognize/' + req.params.img);
 		}
+	},
+	{
+		'url': '/face/img/collection/:collection/:img',
+		'type': 'get',
+		'call': function(req, res){
+      // req.params
+      res.sendFile(process.cwd() + '/plugins/face/collections/' + req.params.collection + '/' + req.params.img);
+		}
 	}
 ];

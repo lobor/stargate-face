@@ -68,24 +68,33 @@ export default [
 		'name': 'fr:collections:get',
 		'depPlugin': ['tableCollections'],
 		'call': function(data, fc){
+			fc(this.tableCollections.findById(data.id));
+		}
+	},
+	{
+		'name': 'fr:collections:get:image',
+		'depPlugin': ['tableCollections'],
+		'call': function(data, fc){
+			let model = this.tableCollections.findById(data.id);
+
+			if(model){
+				let imagesModel = fs.readdirSync(process.cwd() + '/plugins/face/collections/' + model.name);
+				fc({
+					success: true,
+					datas: imagesModel
+				})
+			}
+			else{
+				fc({error: true})
+			}
+			// fc(this.tableCollections.findById(data.id));
+		}
+	},
+	{
+		'name': 'fr:collections:list',
+		'depPlugin': ['tableCollections'],
+		'call': function(data, fc){
 			fc(this.tableCollections.list());
-			// fs.readdir(process.cwd() + '/plugins/face/collections/', function(err, files){
-			// 	if(err){
-			// 		fc({
-			// 			error: err
-			// 		})
-			// 	}
-			// 	else{
-			// 		let result = [];
-			// 		files.forEach((file)=>{
-			// 			result.push({
-			// 				name: file,
-			// 				nbPortrait: fs.readdirSync(process.cwd() + '/plugins/face/collections/' + file).length
-			// 			});
-			// 		});
-			// 		fc(result);
-			// 	}
-			// });
 		}
 	},
 	// {

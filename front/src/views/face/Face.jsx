@@ -7,6 +7,7 @@
 import ListRecognized from './subViews/recognized/ListRecognized';
 import ListNotRecognized from './subViews/notRecognized/ListNotRecognized';
 import ListCollections from './subViews/collections/ListCollections';
+import EditCollection  from './subViews/collections/EditCollection';
 
 class Result extends React.Component {
   constructor(){
@@ -29,7 +30,12 @@ class Result extends React.Component {
           title: "Collections",
           url: '/face/collections',
           component: ListCollections
-        }
+        },
+        // {
+        //   title: "Edit collection",
+        //   url: '/face/collections/edit/:id',
+        //   component: EditCollection
+        // }
       ]
     };
   }

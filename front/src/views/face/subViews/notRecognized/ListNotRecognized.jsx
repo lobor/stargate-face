@@ -1,4 +1,5 @@
 import Loading from 'components/loading/Loading';
+import ButtonDelete from 'components/buttonDelete/ButtonDelete';
 import Lightbox from 'components/Lightbox/Lightbox';
 import Attribute from './../../../../components/Attribute/Attribute';
 
@@ -95,7 +96,7 @@ class ListRecognized extends React.Component {
 										alignItems: 'center'
 									}}>
 										<Ui.RaisedButton label="Attribute" primary={true} onClick={this.handlePopup.bind(this, i)}/>
-										<Ui.RaisedButton icon={< Ui.FontIcon color = "white" className = "material-icons" > delete < /Ui.FontIcon>} onClick={this.delete.bind(this, i)} backgroundColor={Colors.red800}/>
+										<ButtonDelete confirmDelete={this.delete.bind(this, i)} />
 									</Ui.TableRowColumn>
 								</Ui.TableRow>
 							);
