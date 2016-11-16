@@ -59,7 +59,15 @@ class Collections extends React.Component {
             <Ui.TableRow>
               <Ui.TableHeaderColumn>Model Name</Ui.TableHeaderColumn>
               <Ui.TableHeaderColumn>Number of picture</Ui.TableHeaderColumn>
-              <Ui.TableHeaderColumn></Ui.TableHeaderColumn>
+              <Ui.TableHeaderColumn>
+                <ReactRouter.Link to="/face/collections/new">
+                  {
+                    ({isActive, location, href, onClick, transition}) =>(
+                      <Ui.RaisedButton href={href} onClick={onClick} icon={< Ui.FontIcon className = "material-icons" > add < /Ui.FontIcon>}/>
+                    )
+                  }
+                </ReactRouter.Link>
+              </Ui.TableHeaderColumn>
             </Ui.TableRow>
           </Ui.TableHeader>
           <Ui.TableBody displayRowCheckbox={false} showRowHover={true}>

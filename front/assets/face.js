@@ -52,15 +52,15 @@
 	
 	var _routes2 = _interopRequireDefault(_routes);
 	
-	var _navigation = __webpack_require__(3);
+	var _navigation = __webpack_require__(17);
 	
 	var _navigation2 = _interopRequireDefault(_navigation);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	//
-	var conf = __webpack_require__(4);
-	__webpack_require__(5);
+	var conf = __webpack_require__(18);
+	__webpack_require__(19);
 	
 	(0, _toolboxFront.setNavigation)(_navigation2.default, conf.name);
 	(0, _toolboxFront.setRoutes)(_routes2.default);
@@ -137,13 +137,17 @@
 
 	'use strict';
 	
-	var _Face = __webpack_require__(8);
+	var _Face = __webpack_require__(3);
 	
 	var _Face2 = _interopRequireDefault(_Face);
 	
-	var _EditCollection = __webpack_require__(18);
+	var _EditCollection = __webpack_require__(13);
 	
 	var _EditCollection2 = _interopRequireDefault(_EditCollection);
+	
+	var _NewCollection = __webpack_require__(16);
+	
+	var _NewCollection2 = _interopRequireDefault(_NewCollection);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -157,68 +161,15 @@
 		component: _EditCollection2.default,
 		name: 'edit_collection',
 		exactly: false
+	}, {
+		pattern: '/face/collections/new',
+		component: _NewCollection2.default,
+		name: 'new_collection',
+		exactly: false
 	}];
 
 /***/ },
 /* 3 */
-/***/ function(module, exports) {
-
-	"use strict";
-	
-	module.exports = [{
-		"label": "faceRecognition",
-		"href": "/face",
-		"icon": "camera alt"
-	}];
-
-/***/ },
-/* 4 */
-/***/ function(module, exports) {
-
-	'use strict';
-	
-	module.exports = {
-	  name: 'face',
-	  collections: []
-	};
-
-/***/ },
-/* 5 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-	
-	var conf = __webpack_require__(4);
-	
-	Lang.addTrad({
-	  en: _defineProperty({}, conf.name, __webpack_require__(6)),
-	  fr: _defineProperty({}, conf.name, __webpack_require__(7))
-	});
-
-/***/ },
-/* 6 */
-/***/ function(module, exports) {
-
-	'use strict';
-	
-	module.exports = {
-	  faceRecognition: 'Face recognition'
-	};
-
-/***/ },
-/* 7 */
-/***/ function(module, exports) {
-
-	'use strict';
-	
-	module.exports = {
-	  faceRecognition: 'Reconnaissance faciale'
-	};
-
-/***/ },
-/* 8 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -229,19 +180,19 @@
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
-	var _ListRecognized = __webpack_require__(9);
+	var _ListRecognized = __webpack_require__(4);
 	
 	var _ListRecognized2 = _interopRequireDefault(_ListRecognized);
 	
-	var _ListNotRecognized = __webpack_require__(12);
+	var _ListNotRecognized = __webpack_require__(7);
 	
 	var _ListNotRecognized2 = _interopRequireDefault(_ListNotRecognized);
 	
-	var _ListCollections = __webpack_require__(16);
+	var _ListCollections = __webpack_require__(12);
 	
 	var _ListCollections2 = _interopRequireDefault(_ListCollections);
 	
-	var _EditCollection = __webpack_require__(18);
+	var _EditCollection = __webpack_require__(13);
 	
 	var _EditCollection2 = _interopRequireDefault(_EditCollection);
 	
@@ -346,7 +297,7 @@
 	exports.default = Result;
 
 /***/ },
-/* 9 */
+/* 4 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -357,7 +308,7 @@
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
-	var _Loading = __webpack_require__(10);
+	var _Loading = __webpack_require__(5);
 	
 	var _Loading2 = _interopRequireDefault(_Loading);
 	
@@ -515,7 +466,7 @@
 	exports.default = ListRecognized;
 
 /***/ },
-/* 10 */
+/* 5 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -526,7 +477,7 @@
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
-	var _style = __webpack_require__(11);
+	var _style = __webpack_require__(6);
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
@@ -579,7 +530,7 @@
 	exports.default = Loading;
 
 /***/ },
-/* 11 */
+/* 6 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -590,7 +541,7 @@
 	};
 
 /***/ },
-/* 12 */
+/* 7 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -601,19 +552,19 @@
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
-	var _Loading = __webpack_require__(10);
+	var _Loading = __webpack_require__(5);
 	
 	var _Loading2 = _interopRequireDefault(_Loading);
 	
-	var _ButtonDelete = __webpack_require__(13);
+	var _ButtonDelete = __webpack_require__(8);
 	
 	var _ButtonDelete2 = _interopRequireDefault(_ButtonDelete);
 	
-	var _Lightbox = __webpack_require__(14);
+	var _Lightbox = __webpack_require__(10);
 	
 	var _Lightbox2 = _interopRequireDefault(_Lightbox);
 	
-	var _Attribute = __webpack_require__(15);
+	var _Attribute = __webpack_require__(11);
 	
 	var _Attribute2 = _interopRequireDefault(_Attribute);
 	
@@ -800,7 +751,7 @@
 	exports.default = ListRecognized;
 
 /***/ },
-/* 13 */
+/* 8 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -811,7 +762,7 @@
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
-	var _styles = __webpack_require__(17);
+	var _styles = __webpack_require__(9);
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
@@ -906,7 +857,44 @@
 	exports.default = ButtonDelete;
 
 /***/ },
-/* 14 */
+/* 9 */
+/***/ function(module, exports) {
+
+	"use strict";
+	
+	module.exports.StyleContainer = {
+	  display: "flex",
+	  flexDirection: 'column',
+	  marginLeft: "10px",
+	  position: "absolute",
+	  left: 0,
+	  margin: 0,
+	  width: "100%",
+	  backgroundColor: 'rgba(158, 158, 158, 0.8)',
+	  zIndex: 1
+	};
+	
+	module.exports.StyleText = {
+	  textAlign: 'center',
+	  marginBottom: '10px',
+	  marginTop: '10px',
+	  fontWeight: 'bold'
+	};
+	
+	module.exports.StyleContainerButton = {
+	  display: "flex",
+	  justifyContent: "center",
+	  marginBottom: '10px'
+	};
+	
+	module.exports.StyleButton = {
+	  minWidth: "auto",
+	  marginRight: "10px",
+	  marginleft: "10px"
+	};
+
+/***/ },
+/* 10 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -1007,7 +995,7 @@
 	exports.default = Lightbox;
 
 /***/ },
-/* 15 */
+/* 11 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1018,7 +1006,7 @@
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
-	var _Loading = __webpack_require__(10);
+	var _Loading = __webpack_require__(5);
 	
 	var _Loading2 = _interopRequireDefault(_Loading);
 	
@@ -1146,7 +1134,7 @@
 	exports.default = Attribute;
 
 /***/ },
-/* 16 */
+/* 12 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1157,11 +1145,11 @@
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
-	var _Loading = __webpack_require__(10);
+	var _Loading = __webpack_require__(5);
 	
 	var _Loading2 = _interopRequireDefault(_Loading);
 	
-	var _ButtonDelete = __webpack_require__(13);
+	var _ButtonDelete = __webpack_require__(8);
 	
 	var _ButtonDelete2 = _interopRequireDefault(_ButtonDelete);
 	
@@ -1270,7 +1258,26 @@
 	                null,
 	                'Number of picture'
 	              ),
-	              React.createElement(Ui.TableHeaderColumn, null)
+	              React.createElement(
+	                Ui.TableHeaderColumn,
+	                null,
+	                React.createElement(
+	                  ReactRouter.Link,
+	                  { to: '/face/collections/new' },
+	                  function (_ref2) {
+	                    var isActive = _ref2.isActive;
+	                    var location = _ref2.location;
+	                    var href = _ref2.href;
+	                    var onClick = _ref2.onClick;
+	                    var transition = _ref2.transition;
+	                    return React.createElement(Ui.RaisedButton, { href: href, onClick: onClick, icon: React.createElement(
+	                        Ui.FontIcon,
+	                        { className: 'material-icons' },
+	                        ' add '
+	                      ) });
+	                  }
+	                )
+	              )
 	            )
 	          ),
 	          React.createElement(
@@ -1296,12 +1303,12 @@
 	                  React.createElement(
 	                    ReactRouter.Link,
 	                    { to: "/face/collections/edit/" + model.id },
-	                    function (_ref2) {
-	                      var isActive = _ref2.isActive;
-	                      var location = _ref2.location;
-	                      var href = _ref2.href;
-	                      var onClick = _ref2.onClick;
-	                      var transition = _ref2.transition;
+	                    function (_ref3) {
+	                      var isActive = _ref3.isActive;
+	                      var location = _ref3.location;
+	                      var href = _ref3.href;
+	                      var onClick = _ref3.onClick;
+	                      var transition = _ref3.transition;
 	                      return React.createElement(Ui.RaisedButton, { primary: true, href: href, onClick: onClick, icon: React.createElement(
 	                          Ui.FontIcon,
 	                          { className: 'material-icons' },
@@ -1329,44 +1336,7 @@
 	exports.default = Collections;
 
 /***/ },
-/* 17 */
-/***/ function(module, exports) {
-
-	"use strict";
-	
-	module.exports.StyleContainer = {
-	  display: "flex",
-	  flexDirection: 'column',
-	  marginLeft: "10px",
-	  position: "absolute",
-	  left: 0,
-	  margin: 0,
-	  width: "100%",
-	  backgroundColor: 'rgba(158, 158, 158, 0.8)',
-	  zIndex: 1
-	};
-	
-	module.exports.StyleText = {
-	  textAlign: 'center',
-	  marginBottom: '10px',
-	  marginTop: '10px',
-	  fontWeight: 'bold'
-	};
-	
-	module.exports.StyleContainerButton = {
-	  display: "flex",
-	  justifyContent: "center",
-	  marginBottom: '10px'
-	};
-	
-	module.exports.StyleButton = {
-	  minWidth: "auto",
-	  marginRight: "10px",
-	  marginleft: "10px"
-	};
-
-/***/ },
-/* 18 */
+/* 13 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1377,15 +1347,15 @@
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
-	var _Loading = __webpack_require__(10);
+	var _Loading = __webpack_require__(5);
 	
 	var _Loading2 = _interopRequireDefault(_Loading);
 	
-	var _ButtonDelete = __webpack_require__(13);
+	var _ButtonDelete = __webpack_require__(8);
 	
 	var _ButtonDelete2 = _interopRequireDefault(_ButtonDelete);
 	
-	var _Upload = __webpack_require__(19);
+	var _Upload = __webpack_require__(14);
 	
 	var _Upload2 = _interopRequireDefault(_Upload);
 	
@@ -1463,8 +1433,8 @@
 	exports.default = EditCollection;
 
 /***/ },
-/* 19 */
-/***/ function(module, exports) {
+/* 14 */
+/***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 	
@@ -1473,6 +1443,8 @@
 	});
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _styles = __webpack_require__(15);
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
@@ -1495,7 +1467,7 @@
 	    var _this = _possibleConstructorReturn(this, (_ref = Upload.__proto__ || Object.getPrototypeOf(Upload)).call.apply(_ref, [this].concat(args)));
 	
 	    _this.state = {
-	      images: [''],
+	      images: [],
 	      preview: []
 	    };
 	    return _this;
@@ -1534,17 +1506,16 @@
 	    value: function render() {
 	      return React.createElement(
 	        "div",
-	        null,
+	        { style: _styles.StyleContainer },
 	        React.createElement(
 	          "div",
-	          { className: "container-upload" },
+	          { className: "container-upload", style: _styles.StyleContainerInput },
 	          React.createElement("input", { type: "file", id: "fileinput", multiple: "multiple", className: "upload", accept: "image/*", onChange: this.change.bind(this, 'img') }),
 	          React.createElement(Ui.RaisedButton, { className: "fake-button", label: "Add picture", primary: true })
 	        ),
-	        React.createElement("br", null),
 	        React.createElement(
 	          "div",
-	          null,
+	          { style: _styles.StyleContainerPreview },
 	          this.state.preview.map(function (el, i) {
 	            return React.createElement("img", { src: el.data, key: i, width: "100" });
 	          })
@@ -1557,6 +1528,175 @@
 	}(React.Component);
 	
 	exports.default = Upload;
+
+/***/ },
+/* 15 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	module.exports.StyleContainer = {
+	  border: '1px solid ' + Colors.grey300,
+	  borderRadius: "2px",
+	  padding: '5px'
+	};
+	
+	module.exports.StyleContainerPreview = {};
+	
+	module.exports.StyleContainerInput = {
+	  width: '200px'
+	};
+
+/***/ },
+/* 16 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _Loading = __webpack_require__(5);
+	
+	var _Loading2 = _interopRequireDefault(_Loading);
+	
+	var _ButtonDelete = __webpack_require__(8);
+	
+	var _ButtonDelete2 = _interopRequireDefault(_ButtonDelete);
+	
+	var _Upload = __webpack_require__(14);
+	
+	var _Upload2 = _interopRequireDefault(_Upload);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var NewCollection = function (_React$Component) {
+	  _inherits(NewCollection, _React$Component);
+	
+	  function NewCollection() {
+	    var _ref;
+	
+	    _classCallCheck(this, NewCollection);
+	
+	    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+	      args[_key] = arguments[_key];
+	    }
+	
+	    var _this = _possibleConstructorReturn(this, (_ref = NewCollection.__proto__ || Object.getPrototypeOf(NewCollection)).call.apply(_ref, [this].concat(args)));
+	
+	    _this.state = {
+	      form: {
+	        name: false
+	      },
+	      render: true
+	    };
+	
+	    _this.submit = _this.submit.bind(_this);
+	    return _this;
+	  }
+	
+	  _createClass(NewCollection, [{
+	    key: 'handleValue',
+	    value: function handleValue(label, e, value) {
+	      var form = this.state.form;
+	
+	      form[label] = value;
+	
+	      this.setState({ form: form });
+	    }
+	  }, {
+	    key: 'submit',
+	    value: function submit() {
+	      console.log(this);
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      return React.createElement(
+	        _Loading2.default,
+	        { render: this.state.render },
+	        React.createElement(Ui.TextField, { hintText: 'Franck', onChange: this.handleValue.bind(this, 'name'), floatingLabelText: 'Enter name of model' }),
+	        React.createElement(_Upload2.default, { ref: 'upload' }),
+	        React.createElement(Ui.RaisedButton, { label: Lang.save, primary: true, style: { marginTop: '20px', float: 'right' }, onClick: this.submit })
+	      );
+	    }
+	  }]);
+	
+	  return NewCollection;
+	}(React.Component);
+	
+	NewCollection.contextTypes = {
+	  io: React.PropTypes.object
+	};
+	
+	exports.default = NewCollection;
+
+/***/ },
+/* 17 */
+/***/ function(module, exports) {
+
+	"use strict";
+	
+	module.exports = [{
+		"label": "faceRecognition",
+		"href": "/face",
+		"icon": "camera alt"
+	}];
+
+/***/ },
+/* 18 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	module.exports = {
+	  name: 'face',
+	  collections: []
+	};
+
+/***/ },
+/* 19 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+	
+	var conf = __webpack_require__(18);
+	
+	Lang.addTrad({
+	  en: _defineProperty({}, conf.name, __webpack_require__(20)),
+	  fr: _defineProperty({}, conf.name, __webpack_require__(21))
+	});
+
+/***/ },
+/* 20 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	module.exports = {
+	  faceRecognition: 'Face recognition'
+	};
+
+/***/ },
+/* 21 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	module.exports = {
+	  faceRecognition: 'Reconnaissance faciale'
+	};
 
 /***/ }
 /******/ ]);

@@ -1,5 +1,6 @@
 import Face from './../views/face/Face.jsx';
 import EditCollection  from './../views/face/subViews/collections/EditCollection';
+import NewCollection  from './../views/face/subViews/collections/NewCollection';
 
 module.exports = [
 	{
@@ -12,6 +13,12 @@ module.exports = [
 		pattern: '/face/collections/edit/:id',
 		component: EditCollection,
 		name: 'edit_collection',
+		exactly: false
+	},
+	{
+		pattern: '/face/collections/new',
+		component: NewCollection,
+		name: 'new_collection',
 		exactly: false
 	}
 ]
