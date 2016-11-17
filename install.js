@@ -1,30 +1,31 @@
 var spawn = require('child_process').spawn;
 var fs = require('fs');
 var cs = require('./../../core/console');
-
+var rootPath = './../..';
 
 try {
-  fs.accessSync('./tmp/', fs.F_OK);
+  fs.accessSync(rootPath + '/tmp/', fs.F_OK);
 } catch (e) {
-  fs.mkdirSync('./tmp/', '0777');
+  fs.mkdirSync(rootPath + '/tmp/', '0777');
 }
 
 try {
-  fs.accessSync('./tmp/models', fs.F_OK);
+  fs.accessSync(rootPath + '/tmp/models', fs.F_OK);
 } catch (e) {
-  fs.mkdirSync('./tmp/models', '0777');
+  fs.mkdirSync(rootPath + '/tmp/models', '0777');
 }
 
 try {
-  fs.accessSync('./tmp/notRecognize', fs.F_OK);
+  fs.accessSync(rootPath + '/tmp/notRecognize', fs.F_OK);
 } catch (e) {
-  fs.mkdirSync('./tmp/notRecognize', '0777');
+  fs.mkdirSync(rootPath + '/tmp/notRecognize', '0777');
 }
-console.log(process.cwd());
+
 try {
-  fs.accessSync('./db/FaceRecognition', fs.F_OK);
+
+  fs.accessSync(rootPath + '/db/FaceRecognition', fs.F_OK);
 } catch (e) {
-  fs.mkdirSync('./db/FaceRecognition', '0777');
+  fs.mkdirSync(rootPath + '/db/FaceRecognition', '0777');
 }
 
 
