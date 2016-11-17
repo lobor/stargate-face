@@ -22,6 +22,12 @@ try {
 }
 
 try {
+  fs.accessSync(rootPath + '/tmp/collections', fs.F_OK);
+} catch (e) {
+  fs.mkdirSync(rootPath + '/tmp/collections', '0777');
+}
+
+try {
 
   fs.accessSync(rootPath + '/db/FaceRecognition', fs.F_OK);
 } catch (e) {

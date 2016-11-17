@@ -264,11 +264,11 @@
 	                    return location.pathname === button.url;
 	                  } },
 	                function (_ref) {
-	                  var isActive = _ref.isActive;
-	                  var location = _ref.location;
-	                  var href = _ref.href;
-	                  var onClick = _ref.onClick;
-	                  var transition = _ref.transition;
+	                  var isActive = _ref.isActive,
+	                      location = _ref.location,
+	                      href = _ref.href,
+	                      onClick = _ref.onClick,
+	                      transition = _ref.transition;
 	                  return React.createElement(Ui.FlatButton, { primary: isActive, onClick: onClick, href: href, key: i, label: button.title });
 	                }
 	              );
@@ -1265,11 +1265,11 @@
 	                  ReactRouter.Link,
 	                  { to: '/face/collections/new' },
 	                  function (_ref2) {
-	                    var isActive = _ref2.isActive;
-	                    var location = _ref2.location;
-	                    var href = _ref2.href;
-	                    var onClick = _ref2.onClick;
-	                    var transition = _ref2.transition;
+	                    var isActive = _ref2.isActive,
+	                        location = _ref2.location,
+	                        href = _ref2.href,
+	                        onClick = _ref2.onClick,
+	                        transition = _ref2.transition;
 	                    return React.createElement(Ui.RaisedButton, { href: href, onClick: onClick, icon: React.createElement(
 	                        Ui.FontIcon,
 	                        { className: 'material-icons' },
@@ -1304,11 +1304,11 @@
 	                    ReactRouter.Link,
 	                    { to: "/face/collections/edit/" + model.id },
 	                    function (_ref3) {
-	                      var isActive = _ref3.isActive;
-	                      var location = _ref3.location;
-	                      var href = _ref3.href;
-	                      var onClick = _ref3.onClick;
-	                      var transition = _ref3.transition;
+	                      var isActive = _ref3.isActive,
+	                          location = _ref3.location,
+	                          href = _ref3.href,
+	                          onClick = _ref3.onClick,
+	                          transition = _ref3.transition;
 	                      return React.createElement(Ui.RaisedButton, { primary: true, href: href, onClick: onClick, icon: React.createElement(
 	                          Ui.FontIcon,
 	                          { className: 'material-icons' },
@@ -1476,6 +1476,7 @@
 	  _createClass(Upload, [{
 	    key: "change",
 	    value: function change(name, value, e) {
+	
 	      this.setState({ images: value.target.files, preview: [] });
 	
 	      var file;
@@ -1494,6 +1495,11 @@
 	            name: fileReady.name
 	          });
 	          this.setState({ preview: preview });
+	          if (i === len) {
+	            if (this.props.onChange) {
+	              this.props.onChange(this.state.preview);
+	            }
+	          }
 	        }.bind(this, index, file);
 	
 	        if (file) {
@@ -1595,12 +1601,14 @@
 	
 	    _this.state = {
 	      form: {
-	        name: false
+	        name: false,
+	        files: []
 	      },
 	      render: true
 	    };
 	
 	    _this.submit = _this.submit.bind(_this);
+	    _this.changeFile = _this.changeFile.bind(_this);
 	    return _this;
 	  }
 	
@@ -1614,9 +1622,18 @@
 	      this.setState({ form: form });
 	    }
 	  }, {
+	    key: 'changeFile',
+	    value: function changeFile(files) {
+	      var form = this.state.form;
+	      form.files = files;
+	      this.setState({ form: form });
+	    }
+	  }, {
 	    key: 'submit',
 	    value: function submit() {
-	      console.log(this);
+	      this.context.io.run('fr:collections:new', this.state.form, function (data) {
+	        console.log(data);
+	      });
 	    }
 	  }, {
 	    key: 'render',
@@ -1625,7 +1642,7 @@
 	        _Loading2.default,
 	        { render: this.state.render },
 	        React.createElement(Ui.TextField, { hintText: 'Franck', onChange: this.handleValue.bind(this, 'name'), floatingLabelText: 'Enter name of model' }),
-	        React.createElement(_Upload2.default, { ref: 'upload' }),
+	        React.createElement(_Upload2.default, { ref: 'upload', onChange: this.changeFile }),
 	        React.createElement(Ui.RaisedButton, { label: Lang.save, primary: true, style: { marginTop: '20px', float: 'right' }, onClick: this.submit })
 	      );
 	    }

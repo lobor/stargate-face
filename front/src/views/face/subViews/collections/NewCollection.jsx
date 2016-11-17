@@ -9,12 +9,14 @@ class NewCollection extends React.Component {
 
     this.state = {
       form: {
-        name: false
+        name: false,
+        files: []
       },
       render: true
     };
 
     this.submit = this.submit.bind(this);
+    this.changeFile = this.changeFile.bind(this);
   };
 
   handleValue(label, e, value){
@@ -25,15 +27,23 @@ class NewCollection extends React.Component {
     this.setState({form: form});
   }
 
+  changeFile(files){
+    let form = this.state.form;
+    form.files = files;
+    this.setState({form: form});
+  }
+
   submit(){
-    console.log(this);
+    this.context.io.run('fr:collections:new', this.state.form, (data)=>{
+      console.log(data);
+    });
   }
 
   render() {
     return (
       <Loading render={this.state.render}>
         <Ui.TextField hintText="Franck" onChange={this.handleValue.bind(this, 'name')} floatingLabelText="Enter name of model" />
-        <Upload ref="upload" />
+        <Upload ref="upload" onChange={this.changeFile} />
         <Ui.RaisedButton label={Lang.save} primary={true} style={ {marginTop: '20px', float: 'right'} } onClick={this.submit} />
       </Loading>
     )

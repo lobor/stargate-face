@@ -59,7 +59,7 @@ class Face extends Plugin {
   loadCollections(){
     // this.tableCollections = {list: function(){return []}}
     let collections = this.tableCollections.list();
-    let collectionsPath = fs.readdirSync(basePath + '/plugins/face/collections');
+    let collectionsPath = fs.readdirSync(basePath + '/tmp/collections');
 
     if(collectionsPath.length){
       collectionsPath.forEach((model)=>{

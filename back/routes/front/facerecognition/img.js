@@ -4,7 +4,7 @@ export default [
 		'type': 'get',
 		'call': function(req, res){
       // req.params
-      res.sendFile(process.cwd() + '/visio/collections/' + req.params.nameCollection + '/' + req.params.img);
+      res.sendFile(process.cwd() + '/tmp/collections/' + req.params.nameCollection + '/' + req.params.img);
 		}
 	},
 	{
@@ -12,7 +12,7 @@ export default [
 		'type': 'get',
 		'call': function(req, res){
       // req.params
-      res.sendFile(process.cwd() + '/plugins/face/tmp/notRecognize/' + req.params.img);
+      res.sendFile(process.cwd() + '/tmp/notRecognize/' + req.params.img);
 		}
 	},
 	{
@@ -20,7 +20,7 @@ export default [
 		'type': 'get',
 		'call': function(req, res){
       // req.params
-      res.sendFile(process.cwd() + '/plugins/face/collections/' + req.params.collection + '/' + req.params.img);
+      res.sendFile(process.cwd() + '/tmp/collections/' + req.params.collection + '/' + req.params.img);
 		}
 	}
 ];

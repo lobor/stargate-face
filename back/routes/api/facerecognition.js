@@ -20,7 +20,7 @@ export default [
 		'name': 'fr:notRecognize:moveToCollections',
 		'depPlugin': ['tableNotRecognition', 'tableRecognition'],
 		'call': function(data, fc){
-			fs.rename(process.cwd() + '/plugins/face/tmp/notRecognize/' + data.recognize.img, process.cwd() + '/plugins/face/collections/' + data.collection.name + '/' + data.recognize.img, (err) => {
+			fs.rename(process.cwd() + '/tmp/notRecognize/' + data.recognize.img, process.cwd() + '/collections/' + data.collection.name + '/' + data.recognize.img, (err) => {
 			  if (err) {
 					fc({
 						error: err
@@ -47,7 +47,7 @@ export default [
 		'name': 'fr:notRecognize:delete',
 		'depPlugin': ['tableNotRecognition'],
 		'call': function(data, fc){
-			fs.unlink(process.cwd() + '/plugins/face/tmp/notRecognize/' + data.img, (err) => {
+			fs.unlink(process.cwd() + '/tmp/notRecognize/' + data.img, (err) => {
 				if (err) {
 					fc({
 						error: err
@@ -62,39 +62,6 @@ export default [
 
 			this.tableNotRecognition.del(data.id);
 			this.tableNotRecognition.save();
-		}
-	},
-	{
-		'name': 'fr:collections:get',
-		'depPlugin': ['tableCollections'],
-		'call': function(data, fc){
-			fc(this.tableCollections.findById(data.id));
-		}
-	},
-	{
-		'name': 'fr:collections:get:image',
-		'depPlugin': ['tableCollections'],
-		'call': function(data, fc){
-			let model = this.tableCollections.findById(data.id);
-
-			if(model){
-				let imagesModel = fs.readdirSync(process.cwd() + '/plugins/face/collections/' + model.name);
-				fc({
-					success: true,
-					datas: imagesModel
-				})
-			}
-			else{
-				fc({error: true})
-			}
-			// fc(this.tableCollections.findById(data.id));
-		}
-	},
-	{
-		'name': 'fr:collections:list',
-		'depPlugin': ['tableCollections'],
-		'call': function(data, fc){
-			fc(this.tableCollections.list());
 		}
 	},
 	// {
@@ -140,31 +107,31 @@ export default [
 	// 	'name': 'fr:upload',
 	// 	'dep': ['visio'],
 	// 	'call': function(data, fc){
-	// 		let pathToSaveImg = process.cwd() + '/visio/collections/' + data.name;
-	// 		var img, passage = 0;
-	//
-	// 		try {
-  //       fs.accessSync(process.cwd() + '/visio/collections', fs.F_OK);
-  //     } catch (e) {
-  //       fs.mkdirSync(process.cwd() + '/visio/collections', '0777')
-  //     }
-	//
-	// 		try {
-	// 	    fs.accessSync(pathToSaveImg, fs.F_OK);
-	// 		} catch (e) {
-	// 	    fs.mkdirSync(pathToSaveImg, '0777');
-	// 			this.visio.addCollection(data.name);
-	// 		}
-	//
-	// 		data.files.forEach((file, i) => {
-	// 			img = data.files[i].data.replace(/^data:image\/\w+;base64,/, '');
-	//       fs.writeFile(pathToSaveImg + '/' + file.name, img, {encoding: 'base64'}, function(err){
-	// 				passage++;
-	// 				if(passage === data.files.length){
-	// 					fc({'state': true});
-	// 				}
-	//       });
-	// 		})
-	// 	}
+		// 	let pathToSaveImg = process.cwd() + '/visio/collections/' + data.name;
+		// 	var img, passage = 0;
+		//
+		// 	try {
+    //     fs.accessSync(process.cwd() + '/visio/collections', fs.F_OK);
+    //   } catch (e) {
+    //     fs.mkdirSync(process.cwd() + '/visio/collections', '0777')
+    //   }
+		//
+		// 	try {
+		//     fs.accessSync(pathToSaveImg, fs.F_OK);
+		// 	} catch (e) {
+		//     fs.mkdirSync(pathToSaveImg, '0777');
+		// 		this.visio.addCollection(data.name);
+		// 	}
+		//
+		// 	data.files.forEach((file, i) => {
+		// 		img = data.files[i].data.replace(/^data:image\/\w+;base64,/, '');
+	  //     fs.writeFile(pathToSaveImg + '/' + file.name, img, {encoding: 'base64'}, function(err){
+		// 			passage++;
+		// 			if(passage === data.files.length){
+		// 				fc({'state': true});
+		// 			}
+	  //     });
+		// 	})
+		// }
 	// }
 ];
