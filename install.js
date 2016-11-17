@@ -20,7 +20,7 @@ try {
 } catch (e) {
   fs.mkdirSync('./tmp/notRecognize', '0777');
 }
-
+console.log(process.cwd());
 try {
   fs.accessSync('./db/FaceRecognition', fs.F_OK);
 } catch (e) {
