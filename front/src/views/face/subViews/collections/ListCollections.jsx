@@ -12,6 +12,7 @@ class Collections extends React.Component {
     this.delete = this.delete.bind(this);
     this.handleToggle = this.handleToggle.bind(this);
     this.submit = this.submit.bind(this);
+    this.train = this.train.bind(this);
   };
 
   delete(){
@@ -47,6 +48,13 @@ class Collections extends React.Component {
       }
     });
   }
+
+  train(){
+    this.context.io.run('fr:collections:train', {}, ()=>{
+
+    });
+  }
+
   delete(){
 
   }
@@ -67,6 +75,7 @@ class Collections extends React.Component {
                     )
                   }
                 </ReactRouter.Link>
+                <Ui.RaisedButton onClick={this.train} label="Train" />
               </Ui.TableHeaderColumn>
             </Ui.TableRow>
           </Ui.TableHeader>

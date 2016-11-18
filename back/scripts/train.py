@@ -9,7 +9,7 @@ import sys
 
 path = sys.argv[1]
 
-with open(path + 'config/configPython.json') as data_file:
+with open(path + '/plugins/face/config/configPython.json') as data_file:
     config = json.load(data_file)
 
 if False == cv2.useOptimized():
@@ -26,10 +26,12 @@ index = 0
 model_paths = os.listdir(path + config['collection'])
 for model_path in model_paths:
     model_path = path + config['collection'] + '/' + model_path
+
     image_paths = os.listdir(model_path)
     # print image_paths
     for image_path in image_paths:
         image_path = model_path + '/' + image_path
+
         # print image_path
         image = cv2.imread(image_path)
 
@@ -52,5 +54,6 @@ for model_path in model_paths:
 if len(images):
     recognizer.train(images, np.array(labels))
     recognizer.save(path + config['modelFace'])
+    print 'ok'
 else:
     print('not face')

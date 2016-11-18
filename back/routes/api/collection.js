@@ -63,4 +63,12 @@ export default [
 			fc(this.tableCollections.list());
 		}
 	},
+	{
+		'name': 'fr:collections:train',
+		'depPlugin': ['launchTrain'],
+		'call': function(data, fc){
+			this.launchTrain();
+			fc({success: true});
+		}
+	},
 ];

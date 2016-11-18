@@ -40,20 +40,28 @@ class Face extends Plugin {
       this.dependencies.motion.on('start', ()=>{
         let cams = this.dependencies.motion.motion.getCam();
         for(let cam of cams){
-          this.launchWorker(cam);
+          this.launchRecognize(cam);
         }
       });
     }
     else{
       this.loadCamera((cams)=>{
         // for(let cam in cams){
-          this.launchWorker(cams);
+        this.createServerCam(cams);
+          this.launchRecognize(cams);
         // }
       });
     }
 
     // this.launchWorker()
     // console.log(this.dependencies.motion.motion.getCam());
+  }
+
+  createServerCam(cams){
+    workers = workerFarm(basePath + '/plugins/face/lib/serverCam.js');
+    workers(cams, (data) => {
+      workerFarm.end(workers);
+    });
   }
 
   loadCollections(){
@@ -72,63 +80,34 @@ class Face extends Plugin {
     }
 
     this.tableCollections.save();
-    // // else{
-    // //
-    // // }
-    // //
-    // //
-    //
-    // if(collections.length){
-    //   collectionsPath.forEach((model)=>{
-    //     if(!collectionsPath.indexOf(model.name)){
-    //       this.tableCollections.push({
-    //         name: model.name
-    //       })
-    //     }
-    //   })
-    // }
-    // else{
-    //
-    // }
-
   }
 
   loadCamera(cb){
     exec('ls /dev/video*', (error, stdout, stderr) => {
       let webCam = stdout.split('\n'); // output => ['/dev/video0', '/dev/video1', '']
       let camera = [];
-
     	// Hack last item
     	webCam.pop();
-      camera = webCam.length - 1;
-      cb(camera);
-      // console.log(this.props.conf.motion);
-      // if(webCam.length){
-      //   webCam.forEach((el, i) => {
-      //     camera.push();
-      //     this.createCamConf(configJson, 'cam' + 1);
-      //
-      //     this.motion.addCam(configJson);
-      //   });
-      //
-      //   this.emit('addCam');
-      //
-      //   this.motion.setConfig(this.props.conf.motion);
-      //
-      //   this.motion.setConfigPath(__dirname + '/tmp/');
-      //   this.writeConf({
-      //     conf: this.props.conf.motion,
-      //     path: __dirname + '/tmp/',
-      //     name: 'confcam'
-      //   });
-      //   this.start();
-      // }
+
+      webCam.forEach((item)=>{
+        cb(item.replace('/dev/video', ''));
+      })
+      // camera = webCam.length - 1;
+      // cb(camera);
     });
   }
 
 
-  launchWorker(stream){
-    workers = workerFarm(basePath + '/plugins/face/lib/worker.js');
+  launchTrain(){
+    workers = workerFarm(basePath + '/plugins/face/lib/trainWorker.js');
+    workers((data) => {
+      workerFarm.end(workers);
+    });
+  }
+
+
+  launchRecognize(stream){
+    workers = workerFarm(basePath + '/plugins/face/lib/recognizeWorker.js');
     let collections = this.tableCollections.list();
 
     collections = collections.map(function(item){
@@ -137,7 +116,7 @@ class Face extends Plugin {
 
     workers(stream, collections, (data) => {
       workerFarm.end(workers);
-      this.launchWorker(stream);
+      this.launchRecognize(stream);
       this.logResultsFaceRecognition(data);
     });
   }

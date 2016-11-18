@@ -149,23 +149,32 @@
 	
 	var _NewCollection2 = _interopRequireDefault(_NewCollection);
 	
+	var _Stream = __webpack_require__(22);
+	
+	var _Stream2 = _interopRequireDefault(_Stream);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	module.exports = [{
 		pattern: '/face',
 		component: _Face2.default,
 		name: 'face',
-		exactly: false
+		exactly: true
 	}, {
 		pattern: '/face/collections/edit/:id',
 		component: _EditCollection2.default,
 		name: 'edit_collection',
-		exactly: false
+		exactly: true
 	}, {
 		pattern: '/face/collections/new',
 		component: _NewCollection2.default,
 		name: 'new_collection',
-		exactly: false
+		exactly: true
+	}, {
+		pattern: '/face/streams',
+		component: _Stream2.default,
+		name: 'stream',
+		exactly: true
 	}];
 
 /***/ },
@@ -264,11 +273,11 @@
 	                    return location.pathname === button.url;
 	                  } },
 	                function (_ref) {
-	                  var isActive = _ref.isActive,
-	                      location = _ref.location,
-	                      href = _ref.href,
-	                      onClick = _ref.onClick,
-	                      transition = _ref.transition;
+	                  var isActive = _ref.isActive;
+	                  var location = _ref.location;
+	                  var href = _ref.href;
+	                  var onClick = _ref.onClick;
+	                  var transition = _ref.transition;
 	                  return React.createElement(Ui.FlatButton, { primary: isActive, onClick: onClick, href: href, key: i, label: button.title });
 	                }
 	              );
@@ -1183,6 +1192,7 @@
 	    _this.delete = _this.delete.bind(_this);
 	    _this.handleToggle = _this.handleToggle.bind(_this);
 	    _this.submit = _this.submit.bind(_this);
+	    _this.train = _this.train.bind(_this);
 	    return _this;
 	  }
 	
@@ -1229,6 +1239,11 @@
 	      });
 	    }
 	  }, {
+	    key: 'train',
+	    value: function train() {
+	      this.context.io.run('fr:collections:train', {}, function () {});
+	    }
+	  }, {
 	    key: 'delete',
 	    value: function _delete() {}
 	  }, {
@@ -1265,18 +1280,19 @@
 	                  ReactRouter.Link,
 	                  { to: '/face/collections/new' },
 	                  function (_ref2) {
-	                    var isActive = _ref2.isActive,
-	                        location = _ref2.location,
-	                        href = _ref2.href,
-	                        onClick = _ref2.onClick,
-	                        transition = _ref2.transition;
+	                    var isActive = _ref2.isActive;
+	                    var location = _ref2.location;
+	                    var href = _ref2.href;
+	                    var onClick = _ref2.onClick;
+	                    var transition = _ref2.transition;
 	                    return React.createElement(Ui.RaisedButton, { href: href, onClick: onClick, icon: React.createElement(
 	                        Ui.FontIcon,
 	                        { className: 'material-icons' },
 	                        ' add '
 	                      ) });
 	                  }
-	                )
+	                ),
+	                React.createElement(Ui.RaisedButton, { onClick: this.train, label: 'Train' })
 	              )
 	            )
 	          ),
@@ -1304,11 +1320,11 @@
 	                    ReactRouter.Link,
 	                    { to: "/face/collections/edit/" + model.id },
 	                    function (_ref3) {
-	                      var isActive = _ref3.isActive,
-	                          location = _ref3.location,
-	                          href = _ref3.href,
-	                          onClick = _ref3.onClick,
-	                          transition = _ref3.transition;
+	                      var isActive = _ref3.isActive;
+	                      var location = _ref3.location;
+	                      var href = _ref3.href;
+	                      var onClick = _ref3.onClick;
+	                      var transition = _ref3.transition;
 	                      return React.createElement(Ui.RaisedButton, { primary: true, href: href, onClick: onClick, icon: React.createElement(
 	                          Ui.FontIcon,
 	                          { className: 'material-icons' },
@@ -1667,7 +1683,17 @@
 		"label": "faceRecognition",
 		"href": "/face",
 		"icon": "camera alt"
-	}];
+	}, {
+		href: '/face/streams',
+		label: 'stream',
+		icon: "camera alt"
+	}
+	// {
+	// 	"label": "Collection",
+	// 	"href": "/cas",
+	// 	"icon": "videocam"
+	// }
+	];
 
 /***/ },
 /* 18 */
@@ -1714,6 +1740,48 @@
 	module.exports = {
 	  faceRecognition: 'Reconnaissance faciale'
 	};
+
+/***/ },
+/* 22 */
+/***/ function(module, exports) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var Stream = function (_React$Component) {
+	  _inherits(Stream, _React$Component);
+	
+	  function Stream() {
+	    _classCallCheck(this, Stream);
+	
+	    var _this = _possibleConstructorReturn(this, (Stream.__proto__ || Object.getPrototypeOf(Stream)).call(this));
+	
+	    console.log(3);
+	    return _this;
+	  }
+	
+	  _createClass(Stream, [{
+	    key: "render",
+	    value: function render() {
+	      return React.createElement("img", { src: "/face/stream/toto" });
+	    }
+	  }]);
+	
+	  return Stream;
+	}(React.Component);
+	
+	exports.default = Stream;
 
 /***/ }
 /******/ ]);
