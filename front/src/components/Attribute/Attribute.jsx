@@ -26,7 +26,7 @@ class Attribute extends React.Component {
 		this.context.io.run('fr:collections:get', {}, (data)=>{
 			this.setState({
 				render: true,
-				dataSource: data
+				dataSource: data || []
 			})
 		});
 	}

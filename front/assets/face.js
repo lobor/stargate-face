@@ -149,17 +149,13 @@
 	
 	var _NewCollection2 = _interopRequireDefault(_NewCollection);
 	
-	var _Stream = __webpack_require__(22);
-	
-	var _Stream2 = _interopRequireDefault(_Stream);
-	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	module.exports = [{
 		pattern: '/face',
 		component: _Face2.default,
 		name: 'face',
-		exactly: true
+		exactly: false
 	}, {
 		pattern: '/face/collections/edit/:id',
 		component: _EditCollection2.default,
@@ -169,11 +165,6 @@
 		pattern: '/face/collections/new',
 		component: _NewCollection2.default,
 		name: 'new_collection',
-		exactly: true
-	}, {
-		pattern: '/face/streams',
-		component: _Stream2.default,
-		name: 'stream',
 		exactly: true
 	}];
 
@@ -438,7 +429,17 @@
 	            { displayRowCheckbox: false, showRowHover: true },
 	            this.state.fr.map(function (user, i) {
 	              var parseDate = new Date(user.date);
-	              var date = parseDate.getDate() + '/' + (parseDate.getMonth() + 1) + '/' + parseDate.getFullYear() + ' ' + parseDate.getHours() + ':' + parseDate.getMinutes();
+	              var hour = parseDate.getHours();
+	              var minutes = parseDate.getMinutes();
+	              var day = parseDate.getDate();
+	              var month = parseDate.getMonth() + 1;
+	
+	              hour = (hour + '').length === 1 ? "0" + hour : hour;
+	              minutes = (minutes + '').length === 1 ? "0" + minutes : minutes;
+	              day = (day + '').length === 1 ? "0" + day : day;
+	              month = (month + '').length === 1 ? "0" + month : month;
+	
+	              var date = day + '/' + month + '/' + parseDate.getFullYear() + ' ' + hour + ':' + minutes;
 	              return React.createElement(
 	                Ui.TableRow,
 	                { key: i },
@@ -1069,7 +1070,7 @@
 				this.context.io.run('fr:collections:get', {}, function (data) {
 					_this2.setState({
 						render: true,
-						dataSource: data
+						dataSource: data || []
 					});
 				});
 			}
@@ -1620,7 +1621,8 @@
 	        name: false,
 	        files: []
 	      },
-	      render: true
+	      render: true,
+	      redirect: false
 	    };
 	
 	    _this.submit = _this.submit.bind(_this);
@@ -1647,13 +1649,18 @@
 	  }, {
 	    key: 'submit',
 	    value: function submit() {
+	      var _this2 = this;
+	
 	      this.context.io.run('fr:collections:new', this.state.form, function (data) {
-	        console.log(data);
+	        _this2.setState({ redirect: true });
 	      });
 	    }
 	  }, {
 	    key: 'render',
 	    value: function render() {
+	      if (this.state.redirect) {
+	        return React.createElement(Redirect, { to: '/face/collections' });
+	      }
 	      return React.createElement(
 	        _Loading2.default,
 	        { render: this.state.render },
@@ -1683,17 +1690,7 @@
 		"label": "faceRecognition",
 		"href": "/face",
 		"icon": "camera alt"
-	}, {
-		href: '/face/streams',
-		label: 'stream',
-		icon: "camera alt"
-	}
-	// {
-	// 	"label": "Collection",
-	// 	"href": "/cas",
-	// 	"icon": "videocam"
-	// }
-	];
+	}];
 
 /***/ },
 /* 18 */
@@ -1740,48 +1737,6 @@
 	module.exports = {
 	  faceRecognition: 'Reconnaissance faciale'
 	};
-
-/***/ },
-/* 22 */
-/***/ function(module, exports) {
-
-	"use strict";
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-	
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-	
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-	
-	var Stream = function (_React$Component) {
-	  _inherits(Stream, _React$Component);
-	
-	  function Stream() {
-	    _classCallCheck(this, Stream);
-	
-	    var _this = _possibleConstructorReturn(this, (Stream.__proto__ || Object.getPrototypeOf(Stream)).call(this));
-	
-	    console.log(3);
-	    return _this;
-	  }
-	
-	  _createClass(Stream, [{
-	    key: "render",
-	    value: function render() {
-	      return React.createElement("img", { src: "/face/stream/toto" });
-	    }
-	  }]);
-	
-	  return Stream;
-	}(React.Component);
-	
-	exports.default = Stream;
 
 /***/ }
 /******/ ]);

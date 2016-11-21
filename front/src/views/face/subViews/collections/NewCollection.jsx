@@ -12,7 +12,8 @@ class NewCollection extends React.Component {
         name: false,
         files: []
       },
-      render: true
+      render: true,
+      redirect: false
     };
 
     this.submit = this.submit.bind(this);
@@ -35,16 +36,20 @@ class NewCollection extends React.Component {
 
   submit(){
     this.context.io.run('fr:collections:new', this.state.form, (data)=>{
-      console.log(data);
+      this.setState({redirect: true});
     });
   }
 
   render() {
+    if(this.state.redirect){
+      return (<Redirect to="/face/collections"/>);
+    }
     return (
       <Loading render={this.state.render}>
         <Ui.TextField hintText="Franck" onChange={this.handleValue.bind(this, 'name')} floatingLabelText="Enter name of model" />
         <Upload ref="upload" onChange={this.changeFile} />
         <Ui.RaisedButton label={Lang.save} primary={true} style={ {marginTop: '20px', float: 'right'} } onClick={this.submit} />
+
       </Loading>
     )
   }

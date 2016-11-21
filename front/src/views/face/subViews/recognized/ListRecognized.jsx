@@ -83,7 +83,17 @@ class ListRecognized extends React.Component{
           <Ui.TableBody displayRowCheckbox={false} showRowHover={true}>
             {this.state.fr.map((user, i)=>{
               let parseDate = new Date(user.date);
-              let date = parseDate.getDate() + '/' + (parseDate.getMonth() + 1) + '/' + parseDate.getFullYear() + ' ' + parseDate.getHours() + ':' + parseDate.getMinutes()
+              let hour = parseDate.getHours();
+              let minutes = parseDate.getMinutes();
+              let day = parseDate.getDate();
+              let month = parseDate.getMonth() + 1;
+
+              hour = ((hour + '').length === 1) ? "0" + hour : hour;
+              minutes = ((minutes + '').length === 1) ? "0" + minutes : minutes;
+              day = ((day + '').length === 1) ? "0" + day :  day;
+              month = ((month + '').length === 1) ? "0" + month :month;
+
+              let date = day + '/' + month + '/' + parseDate.getFullYear() + ' ' + hour + ':' + minutes;
               return (
                 <Ui.TableRow key={i}>
                   <Ui.TableRowColumn>{user.who}</Ui.TableRowColumn>
